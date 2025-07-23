@@ -14,6 +14,8 @@ It contains:
 - A **Frontend Angular** (Node) container which can connect to the API and use 'ng serve' to expose the SPA
 - An **Adminer** container to connect to database using a friendly UI (compatible with multiple databases)
 
+> It shoulds only be used for development and not production. Secrets are fake and not usable for other purpose.
+
 ## Installation and Usage
 
 You need :
