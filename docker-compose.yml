@@ -1,0 +1,68 @@
+services:
+  php:
+    image: php-composer-symfony-dev # Custom image for PHP, Composer, and Symfony development
+    volumes:
+      - ./symfony:/var/www/html/:rw
+    ports:
+      - "8000:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: app-db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    environment:
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-u", "postgres", "-d", "app-db"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+  node:
+    image: node-npm-angular-dev
+    volumes:
+      - ./angular:/var/www/html:rw
+    ports:
+      - "4200:4200"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      php:
+        condition: service_healthy
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - db
+
+volumes:
+  db-data:

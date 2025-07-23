@@ -1,0 +1,13 @@
+@if(pokemons()) {
+<p>{{ "Nb. of pokemons : " + pokemons().totalItems }}</p>
+} @for (pokemon of pokemons().member; track pokemon.id) {
+<p-card
+  title="My card"
+  [header]="pokemon.id + ': ' + pokemon.name | titlecase"
+  styleClass="my-8 border-1 border-primary-500 shadow-lg shadow-primary-500/50"
+>
+  {{ pokemon.type || "N/A" }}
+</p-card>
+} @empty {
+<p>No pokemons yet</p>
+}
