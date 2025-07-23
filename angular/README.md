@@ -1,6 +1,8 @@
 # AngularApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.x.
+
+> Used to demonstrate the infra, not a real app.
 
 ## Development server
 
@@ -41,10 +43,12 @@ This will compile your project and store the build artifacts in the `dist/` dire
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
 ```bash
-ng test
+npm run test
 ```
 
-## Running end-to-end tests
+it runs `ng test` with options to connect to the chromium headless in the container. Feel free to adapt to your needs.
+
+## Running end-to-end tests (not tested)
 
 For end-to-end (e2e) testing, run:
 
