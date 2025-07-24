@@ -1,7 +1,6 @@
 FROM php:8.4-apache
 
 # Install system dependencies
-# @TODO: Add test capabilities throught Xdebug installation (if custom code)
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
@@ -10,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && docker-php-ext-install intl \
     && docker-php-ext-install pdo_pgsql pgsql \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -23,6 +24,10 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash \
 
 # Disable short_open_tag in php.ini
 RUN echo "short_open_tag = Off" > /usr/local/etc/php/conf.d/99-short_open_tag.ini
+
+# Xdebug configuration
+RUN echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.mode=develop,debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # Change Apache DocumentRoot to /var/www/html/public
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
