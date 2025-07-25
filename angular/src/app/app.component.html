@@ -1,5 +1,17 @@
 <div class="container mx-auto mt-4">
-  <p-card header="Pokemons">
-    <app-pokemon-list></app-pokemon-list>
+  <p-card>
+    <ng-template #title>
+      <div class="flex justify-between">
+        <span>Pokemons</span>
+        <app-add-pokemon
+          (pokemonAdded)="setPokemonAdded($event)"
+          [pokemonEdit]="pokemonEdit"
+        ></app-add-pokemon>
+      </div>
+    </ng-template>
+    <app-pokemon-list
+      [pokemonAdded]="pokemonAdded"
+      (pokemonEdit)="setPokemonEdit($event)"
+    ></app-pokemon-list>
   </p-card>
 </div>
