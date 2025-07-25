@@ -1,6 +1,5 @@
 import {
   Component,
-  computed,
   effect,
   inject,
   input,
@@ -17,7 +16,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpResponse } from "@angular/common/http";
 
 @Component({
-  selector: "app-add-pokemon",
+  selector: "app-pokemon-form",
   imports: [
     ButtonModule,
     FormsModule,
@@ -25,12 +24,12 @@ import { HttpResponse } from "@angular/common/http";
     InputNumberModule,
     Dialog,
   ],
-  templateUrl: "./add-pokemon.component.html",
+  templateUrl: "./pokemon-form.component.html",
 })
-export class AddPokemonComponent {
+export class PokemonFormComponent {
   private readonly pokemonService: PokemonService = inject(PokemonService);
 
-  pokemonAdded = output<any>();
+  pokemonAdded = output<Pokemon | null>();
   pokemonEdit = input<Pokemon | null>();
   visible = signal(false);
 

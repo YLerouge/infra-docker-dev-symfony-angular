@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AddPokemonComponent } from "./add-pokemon.component";
+import { PokemonFormComponent } from "./pokemon-form.component";
 import { provideHttpClient } from "@angular/common/http";
 import { provideZonelessChangeDetection } from "@angular/core";
 
-describe("AddPokemonComponent", () => {
-  let component: AddPokemonComponent;
-  let fixture: ComponentFixture<AddPokemonComponent>;
+describe("PokemonFormComponent", () => {
+  let component: PokemonFormComponent;
+  let fixture: ComponentFixture<PokemonFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [provideZonelessChangeDetection(), provideHttpClient()],
-      imports: [AddPokemonComponent],
+      imports: [PokemonFormComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddPokemonComponent);
+    fixture = TestBed.createComponent(PokemonFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,38 +1,37 @@
 import {
-  ChangeDetectorRef,
   Component,
   effect,
   inject,
-  Injector,
   input,
-  OnInit,
   output,
-  runInInjectionContext,
   Signal,
   signal,
 } from "@angular/core";
+import { TitleCasePipe } from "@angular/common";
+import { HttpResponse } from "@angular/common/http";
+
 import { toSignal } from "@angular/core/rxjs-interop";
+import { BehaviorSubject, map, switchMap } from "rxjs";
+
 import { CardModule } from "primeng/card";
 import { PanelModule } from "primeng/panel";
+import { DividerModule } from "primeng/divider";
+import { Button } from "primeng/button";
 
 import { Pokemon, PokemonService } from "../../shared/services/pokemon.service";
-import { TitleCasePipe } from "@angular/common";
-import { BehaviorSubject, map, switchMap } from "rxjs";
-import { Button } from "primeng/button";
-import { HttpResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-pokemon-list",
-  imports: [PanelModule, CardModule, TitleCasePipe, Button],
+  imports: [PanelModule, CardModule, TitleCasePipe, Button, DividerModule],
   templateUrl: "./pokemon-list.component.html",
 })
 export class PokemonListComponent {
   private readonly pokemonService: PokemonService = inject(PokemonService);
 
-  private refresh$ = new BehaviorSubject<void>(undefined);
-
   pokemons: Signal<Pokemon[] | undefined> = signal([]);
-  pokemonAdded = input<any>();
+
+  private refresh$ = new BehaviorSubject<Pokemon[] | void>(undefined);
+  pokemonAdded = input<Pokemon | null>();
   pokemonEdit = output<Pokemon | null>();
 
   constructor() {

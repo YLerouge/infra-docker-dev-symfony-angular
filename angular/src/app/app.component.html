@@ -1,12 +1,12 @@
 <div class="container mx-auto mt-4">
-  <p-card>
+  <p-card class="bg-slate-100 dark:bg-zinc-900 shadow-lg shadow-zinc-900/50">
     <ng-template #title>
       <div class="flex justify-between">
         <span>Pokemons</span>
-        <app-add-pokemon
+        <app-pokemon-form
           (pokemonAdded)="setPokemonAdded($event)"
           [pokemonEdit]="pokemonEdit"
-        ></app-add-pokemon>
+        ></app-pokemon-form>
       </div>
     </ng-template>
     <app-pokemon-list

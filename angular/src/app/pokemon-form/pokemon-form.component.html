@@ -3,7 +3,7 @@
   [header]="pokemonEdit() ? `Edit ${pokemonEdit()?.name}` : 'Add new Pokemon'"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '25rem' }"
+  styleClass="bg-slate-100 dark:bg-zinc-900 md:w-1/2 lg:w-1/4"
 >
   <div class="flex items-center gap-4 mb-4">
     <label for="name" class="font-semibold w-24">Name</label>

@@ -3,10 +3,10 @@
 } @for (pokemon of pokemons(); track pokemon.id) {
 <p-card
   [title]="pokemon.name"
-  styleClass="my-8 border-2 border-ligh-900 shadow-lg"
+  class="my-8 bg-slate-100 dark:bg-zinc-800 shadow shadow-zinc-900/50 dark:shadow-primary-500/70"
 >
   <ng-template #title>
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center">
       <span>{{ pokemon.id + ": " + pokemon.name | titlecase }}</span>
       <div class="flex gap-4 justify-end">
         <p-button icon="pi pi-pencil" (click)="editPokemon(pokemon)"></p-button>
@@ -18,7 +18,8 @@
       </div>
     </div>
   </ng-template>
-  <div class="flex gap-4">
+  <p-divider />
+  <div class="flex mt-2 gap-4">
     <span>Type: {{ (pokemon.type | titlecase) || "N/A" }}</span>
     <span>Weight: {{ pokemon.weight || "N/A" }}</span>
   </div>
