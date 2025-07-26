@@ -12,15 +12,10 @@ import { PokemonFormComponent } from "./pokemon-form/pokemon-form.component";
   styleUrl: "./app.component.css",
 })
 export class AppComponent {
-  pokemons: Pokemon[] = [];
   pokemonAdded?: any;
   pokemonEdit: Pokemon | null = null;
 
-  setPokemons(value: Pokemon[] | undefined) {
-    this.pokemons = value ?? [];
-  }
-
-  setPokemonAdded(value?: any) {
+  setPokemonAdded(value?: Pokemon | null) {
     this.pokemonAdded = value;
   }
 

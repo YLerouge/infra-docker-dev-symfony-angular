@@ -9,8 +9,13 @@
     <div class="flex justify-between items-center">
       <span>{{ pokemon.id + ": " + pokemon.name | titlecase }}</span>
       <div class="flex gap-4 justify-end">
-        <p-button icon="pi pi-pencil" (click)="editPokemon(pokemon)"></p-button>
         <p-button
+          id="edit"
+          icon="pi pi-pencil"
+          (click)="editPokemon(pokemon)"
+        ></p-button>
+        <p-button
+          id="delete"
           severity="danger"
           icon="pi pi-trash"
           (click)="confirmDeletion($event, pokemon)"
