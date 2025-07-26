@@ -3,6 +3,7 @@
   [header]="pokemonEdit() ? `Edit ${pokemonEdit()?.name}` : 'Add new Pokemon'"
   [modal]="true"
   [(visible)]="visible"
+  [focusOnShow]="false"
   styleClass="bg-slate-100 dark:bg-zinc-900 md:w-1/2 lg:w-1/4"
 >
   <div class="flex items-center gap-4 mb-4">
@@ -46,3 +47,4 @@
     <p-button label="Save" (click)="_pokemonId ? edit(_pokemonId) : new()" />
   </div>
 </p-dialog>
+<p-toast position="bottom-right" />

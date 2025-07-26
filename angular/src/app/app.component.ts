@@ -1,6 +1,5 @@
 import { Component, input } from "@angular/core";
-import { CardModule } from "primeng/card";
-import { PanelModule } from "primeng/panel";
+import { Card } from "primeng/card";
 
 import { PokemonListComponent } from "./pokemon-list/pokemon-list.component";
 import { Pokemon } from "../shared/services/pokemon.service";
@@ -8,12 +7,7 @@ import { PokemonFormComponent } from "./pokemon-form/pokemon-form.component";
 
 @Component({
   selector: "app-root",
-  imports: [
-    PanelModule,
-    CardModule,
-    PokemonListComponent,
-    PokemonFormComponent,
-  ],
+  imports: [Card, PokemonListComponent, PokemonFormComponent],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
 })

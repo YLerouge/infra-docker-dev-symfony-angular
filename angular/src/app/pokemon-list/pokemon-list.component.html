@@ -13,7 +13,7 @@
         <p-button
           severity="danger"
           icon="pi pi-trash"
-          (click)="deletePokemon(pokemon.id)"
+          (click)="confirmDeletion($event, pokemon)"
         ></p-button>
       </div>
     </div>
@@ -24,6 +24,6 @@
     <span>Weight: {{ pokemon.weight || "N/A" }}</span>
   </div>
 </p-card>
-} @empty {
-<p>No pokemons yet</p>
 }
+<p-toast position="bottom-right" />
+<p-confirmdialog />

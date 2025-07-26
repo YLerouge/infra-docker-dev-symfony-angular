@@ -1,34 +1,30 @@
 import {
   Component,
   effect,
-  inject,
   input,
   output,
   signal,
   untracked,
 } from "@angular/core";
-import { Dialog } from "primeng/dialog";
-import { ButtonModule } from "primeng/button";
-import { InputTextModule } from "primeng/inputtext";
-import { InputNumberModule } from "primeng/inputnumber";
-import { Pokemon, PokemonService } from "../../shared/services/pokemon.service";
 import { FormsModule } from "@angular/forms";
 import { HttpResponse } from "@angular/common/http";
 
+import { Dialog } from "primeng/dialog";
+import { Button } from "primeng/button";
+import { InputText } from "primeng/inputtext";
+import { InputNumber } from "primeng/inputnumber";
+import { Toast } from "primeng/toast";
+import { MessageService } from "primeng/api";
+
+import { Pokemon, PokemonService } from "../../shared/services/pokemon.service";
+
 @Component({
   selector: "app-pokemon-form",
-  imports: [
-    ButtonModule,
-    FormsModule,
-    InputTextModule,
-    InputNumberModule,
-    Dialog,
-  ],
+  imports: [Button, FormsModule, InputText, InputNumber, Dialog, Toast],
+  providers: [MessageService],
   templateUrl: "./pokemon-form.component.html",
 })
 export class PokemonFormComponent {
-  private readonly pokemonService: PokemonService = inject(PokemonService);
-
   pokemonAdded = output<Pokemon | null>();
   pokemonEdit = input<Pokemon | null>();
   visible = signal(false);
@@ -39,7 +35,10 @@ export class PokemonFormComponent {
     weight: null,
   };
 
-  constructor() {
+  constructor(
+    private readonly pokemonService: PokemonService,
+    private readonly messageService: MessageService
+  ) {
     effect(() => {
       let pokemonEdit = this.pokemonEdit();
 
@@ -62,6 +61,12 @@ export class PokemonFormComponent {
           this.visible.set(false);
           this.resetValue();
           this.pokemonAdded.emit(response.body);
+          this.messageService.add({
+            severity: "success",
+            summary: "Yeah !",
+            detail: `'${response.body?.name}' created.`,
+            life: 3000,
+          });
         }
       });
   }
@@ -74,6 +79,12 @@ export class PokemonFormComponent {
           this.visible.set(false);
           this.resetValue();
           this.pokemonAdded.emit(response.body);
+          this.messageService.add({
+            severity: "success",
+            summary: "Yeah !",
+            detail: `'${response.body?.name}' updated.`,
+            life: 3000,
+          });
         }
       });
   }
