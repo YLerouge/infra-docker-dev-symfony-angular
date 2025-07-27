@@ -1,7 +1,12 @@
-<p-button icon="pi pi-plus" (click)="visible.set(true)"></p-button>
+<p-button
+  icon="pi pi-plus"
+  [rounded]="true"
+  (click)="visible.set(true)"
+></p-button>
 <p-dialog
   [header]="pokemonEdit() ? `Edit ${pokemonEdit()?.name}` : 'Add new Pokemon'"
   [modal]="true"
+  [draggable]="false"
   [(visible)]="visible"
   [focusOnShow]="false"
   styleClass="bg-slate-100 dark:bg-zinc-900 md:w-1/2 lg:w-1/4"
@@ -44,7 +49,11 @@
       (click)="visible.set(false)"
     />
     @let _pokemonId = pokemonEdit()?.id;
-    <p-button label="Save" (click)="_pokemonId ? edit(_pokemonId) : new()" />
+    <p-button
+      id="save"
+      label="Save"
+      (click)="_pokemonId ? edit(_pokemonId) : new()"
+    />
   </div>
 </p-dialog>
 <p-toast position="bottom-right" />
