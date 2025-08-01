@@ -1,8 +1,9 @@
 services:
   php:
-    image: php-composer-symfony-dev # Custom image for PHP, Composer, and Symfony development
+    # Custom image for PHP, Composer, and Symfony development
+    image: php-composer-symfony-dev
     volumes:
-      - ./symfony:/var/www/html/:rw
+      - ${PHP_SYMFONY_APP_PATH:-./symfony-api}:/var/www/html/:rw
     ports:
       - "8000:80"
     environment:
@@ -10,9 +11,15 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DB_NAME: app-db
+      DB_NAME: ${DB_NAME:-app-db}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "${PHP_HEALTH_CHECK_ENDPOINT:-http://localhost/api}",
+        ]
       interval: 5s
       timeout: 5s
       retries: 3
@@ -33,15 +40,24 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready", "-u", "postgres", "-d", "app-db"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready",
+          "-u",
+          "postgres",
+          "-d",
+          "${DB_NAME:-app-db}",
+        ]
       interval: 1s
       timeout: 5s
       retries: 10
 
   node:
+    # Custom image for Angular development using NPM and Node
     image: node-npm-angular-dev
     volumes:
-      - ./angular:/var/www/html:rw
+      - ${PHP_SYMFONY_APP_PATH:-./angular-spa}:/var/www/html:rw
     ports:
       - "4200:4200"
     healthcheck:

@@ -29,6 +29,12 @@ You can run all containers with:
 docker-compose up -d
 ```
 
+You can specify an environment file with `--env-file` if you want to customize or create multiple configurations:
+
+```bash
+docker-compose --env-file .env.local up -d
+```
+
 Check the status of running container with:
 
 ```bash
