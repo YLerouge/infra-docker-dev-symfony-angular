@@ -1,85 +1,74 @@
 services:
-  php:
-    # Custom image for PHP, Composer, and Symfony development
-    image: php-composer-symfony-dev
-    volumes:
-      - ${PHP_SYMFONY_APP_PATH:-./symfony-api}:/var/www/html/:rw
-    ports:
-      - "8000:80"
-    environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: ${DB_NAME:-app-db}
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "${PHP_HEALTH_CHECK_ENDPOINT:-http://localhost/api}",
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      db:
-        condition: service_healthy
+    php:
+        # Custom image for PHP, Composer, and Symfony development
+        image: php-composer-symfony-dev
+        volumes:
+            - ${PHP_SYMFONY_APP_PATH:-./symfony-api}:/var/www/html/:rw
+        ports:
+            - "8000:80"
+        environment:
+            DB_HOST: db
+            DB_PORT: 5432
+            DB_USER: postgres
+            DB_PASSWORD: postgres
+            DB_NAME: ${DB_NAME:-app-db}
+        healthcheck:
+            test: ["CMD", "curl", "-f", "${PHP_HEALTH_CHECK_ENDPOINT:-http://localhost/api}"]
+            interval: 5s
+            timeout: 5s
+            retries: 3
+        depends_on:
+            db:
+                condition: service_healthy
 
-  db:
-    image: postgres:17-alpine
-    restart: always
-    volumes:
-      - db-data:/var/lib/postgresql/data:rw
-    # set shared memory limit when using docker compose
-    shm_size: 128mb
-    user: "70:70"
-    environment:
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready",
-          "-u",
-          "postgres",
-          "-d",
-          "${DB_NAME:-app-db}",
-        ]
-      interval: 1s
-      timeout: 5s
-      retries: 10
+    db:
+        image: postgres:17-alpine
+        restart: always
+        volumes:
+            - db-data:/var/lib/postgresql/data:rw
+        # set shared memory limit when using docker compose
+        shm_size: 128mb
+        user: "70:70"
+        # ports:
+        #     - "5432:5432"
+        environment:
+            # You should definitely change the password in production
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_USER: postgres
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready", "-u", "postgres", "-d", "${DB_NAME:-app-db}"]
+            interval: 1s
+            timeout: 5s
+            retries: 10
 
-  node:
-    # Custom image for Angular development using NPM and Node
-    image: node-npm-angular-dev
-    volumes:
-      - ${PHP_SYMFONY_APP_PATH:-./angular-spa}:/var/www/html:rw
-    ports:
-      - "4200:4200"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4200"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      php:
-        condition: service_healthy
+    node:
+        # Custom image for Angular development using NPM and Node
+        image: node-npm-angular-dev
+        volumes:
+            - ${PHP_SYMFONY_APP_PATH:-./angular-spa}:/var/www/html:rw
+        ports:
+            - "4200:4200"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:4200"]
+            interval: 5s
+            timeout: 5s
+            retries: 3
+        # command: "npm install"
+        depends_on:
+            php:
+                condition: service_healthy
 
-  adminer:
-    image: adminer
-    ports:
-      - "8080:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
-    depends_on:
-      - db
+    adminer:
+        image: adminer
+        ports:
+            - "8080:8080"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8080"]
+            interval: 5s
+            timeout: 5s
+            retries: 3
+        depends_on:
+            - db
 
 volumes:
-  db-data:
+    db-data:

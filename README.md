@@ -16,6 +16,8 @@ It contains:
 
 > It shoulds only be used for development and not production. Secrets are fake and not usable for other purpose than development.
 
+Tested on linux. It can be different on windows about permissions.
+
 ## Installation and Usage
 
 You need :
@@ -48,7 +50,7 @@ docker-compose ps
 You can build the PHP image using:
 
 ```bash
-docker build -t php-composer-symfony-dev ./symfony
+docker build -t php-composer-symfony-dev ./symfony-api
 ```
 
 It contains the installation of Composer and Symfony CLI on a PHP Apache base with some modules and configuration for developping a Symfony Application.
@@ -76,8 +78,11 @@ See [the symfony README](./symfony/README.md) for more related command.
 You can build the Node image using:
 
 ```bash
-docker build -t node-npm-angular-dev ./angular
+docker build -t node-npm-angular-dev ./angular-spa
 ```
+
+> The first time you want to up the container, uncomment the line which overload the command to install your dependencies or install them in local before.
+> Remember to comment the line after to run the `ng serve` command automatically.
 
 It contains Node (with NPM), the Angular CLI and a chromium used for tests (feel free to add Yarn instead of NPM if you prefer).
 
