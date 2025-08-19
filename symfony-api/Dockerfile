@@ -1,4 +1,15 @@
+FROM composer:latest AS composer
+
 FROM php:8.4-apache
+
+### Uncomment and adapt this if you have trouble with certificate and VPN/Proxy ###
+# Copy certificate from local
+# COPY ["Zscaler Root CA.crt","/etc/ssl/certs/Zscaler Root CA.crt"]
+
+# # Set certificate for PHP, wget and curl
+# RUN echo "openssl.cafile = '/etc/ssl/certs/Zscaler Root CA.crt'" > /usr/local/etc/php/php.ini
+# RUN echo "ca_certificate=/etc/ssl/certs/Zscaler Root CA.crt" >> $HOME/.wgetrc
+# RUN echo "cacert=\"/etc/ssl/certs/Zscaler Root CA.crt\"" >> $HOME/.curlrc
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -7,16 +18,27 @@ RUN apt-get update && apt-get install -y \
     wget \
     libicu-dev \
     libpq-dev \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install pdo_pgsql pgsql \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install pdo_pgsql pgsql \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-RUN wget https://getcomposer.org/installer -O composer-setup.php \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && rm composer-setup.php
+# Install XDEBUG (without PECL if needed)
+# RUN cd /tmp \
+#     && git config --global http.sslVerify false \
+#     && git clone https://github.com/xdebug/xdebug.git \
+#     && cd xdebug \
+#     && git checkout xdebug_3_4 \
+#     && phpize \
+#     && ./configure --enable-xdebug \
+#     && make \
+#     && make install \
+#     && rm -rf /tmp/xdebug \
+#     && docker-php-ext-enable xdebug
+
+# Install Composer from official image
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Install Symfony CLI
 RUN wget https://get.symfony.com/cli/installer -O - | bash \

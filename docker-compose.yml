@@ -45,7 +45,7 @@ services:
         # Custom image for Angular development using NPM and Node
         image: node-npm-angular-dev
         volumes:
-            - ${PHP_SYMFONY_APP_PATH:-./angular-spa}:/var/www/html:rw
+            - ${ANGULAR_APP_PATH:-./angular-spa}:/var/www/html:rw
         ports:
             - "4200:4200"
         healthcheck:
